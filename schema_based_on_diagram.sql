@@ -71,10 +71,6 @@ ADD CONSTRAINT fk_medical_history_id
 FOREIGN KEY(medical_history_id)
 REFERENCES medical_histories(id);
 
-ALTER TABLE invoices
-ADD CONSTRAINT unique_medical_history_id
-UNIQUE (medical_history_id);
-
 -- Add foreign key connecting invoices and treatments
 
 ALTER TABLE invoice_items
@@ -88,3 +84,31 @@ ALTER TABLE invoice_items
 ADD CONSTRAINT fk_invoice_id
 FOREIGN KEY(invoice_id)
 REFERENCES invoices(id);
+
+-- Creating a joining table for many-to-many relationship between medical_histories and treatments.
+
+CREATE TABLE treatments_histories (
+	id GENERATED ALWAYS AS IDENTITY,
+	medical_history_id INT,
+	treatment_id INT,
+	PRIMARY KEY(id)
+);
+
+-- Add foriegn key
+
+ALTER TABLE treatments_histories
+ADD CONSTRAINT fk_medical_history_id
+FOREIGN KEY(medical_history_id)
+REFERENCES medical_histories(id),
+ADD CONSTRAINT fk_treatment_id
+FOREIGN KEY(treatment_id)
+REFERENCES treatments(id);
+
+-- Create Indexes.
+
+CREATE INDEX ON medical_histories (patient_id);
+CREATE INDEX ON invoices (medical_history_id);
+CREATE INDEX ON invoice_items (invoice_id);
+CREATE INDEX ON invoice_items (treatment_id);
+CREATE INDEX ON treatments_histories (medical_history_id);
+CREATE INDEX ON treatments_histories (treatment_id);
