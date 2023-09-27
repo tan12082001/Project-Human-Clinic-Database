@@ -110,3 +110,5 @@ CREATE INDEX ON medical_histories (patient_id);
 CREATE INDEX ON invoices (medical_history_id);
 CREATE INDEX ON invoice_items (invoice_id);
 CREATE INDEX ON invoice_items (treatment_id);
+CREATE INDEX ON treatments_histories(medical_history_id);
+CREATE INDEX ON treatments_histories(treatment_id);
